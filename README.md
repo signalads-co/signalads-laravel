@@ -1,6 +1,6 @@
-# Kavenegar Laravel
+# Signalads Laravel
 
-**First of all you will ned an [API Key](http://panel.kavenegar.com/client/setting/account "API Key") . You can get one [Here](https://panel.kavenegar.com/Client/Membership/Register).**
+**First of all you will ned an [API Key](http://panel.signalads.com "API Key") . You can get one [Here](https://panel.signalads.com/Client/Membership/Register).**
 
 ##### Supported Laravel Versions:
 
@@ -17,17 +17,17 @@
 ## Step 1 - Install the package
 
 - **Method 1**:
-  You can install kavenegar/laravel with Composer directly in your project:
+  You can install signalads/laravel with Composer directly in your project:
 
 ```php
-composer require kavenegar/laravel
+composer require signalads/laravel
 ```
 
 - **Method 2**:
   Add this line to **Composer.json** file in your project
 
 ```php
-"kavenegar/php": "*"
+"signalads/php": "*"
 ```
 
 Then run following command to download extension using **composer**
@@ -41,7 +41,7 @@ $ composer update
 Head to **config/app.php** and add this line to the end of **providers** Array:
 
 ```php
-Kavenegar\Laravel\ServiceProvider::class,
+Signalads\Laravel\ServiceProvider::class,
 ```
 
 So that array must me something like this:
@@ -54,14 +54,14 @@ So that array must me something like this:
 		.
 		.
 		.
-		Kavenegar\Laravel\ServiceProvider::class
+		Signalads\Laravel\ServiceProvider::class
 ]
 ```
 
 Then in the **config/app.php** and add this line to the end of **aliases** Array:
 
 ```php
-'Kavenegar' => Kavenegar\Laravel\Facade::class,
+'Signalads' => Signalads\Laravel\Facade::class,
 ```
 
 ## Step 3 - Publish
@@ -72,7 +72,7 @@ Run this command in your project dirctory:
 php artisan vendor:publish
 ```
 
-In the message appear, find the number of Kavenegar, enter the related number then hit Enter. for Example in the below case you must enter **9** then enter:
+In the message appear, find the number of Signalads, enter the related number then hit Enter. for Example in the below case you must enter **9** then enter:
 
 ```bash
 Which provider or tag files would you like to publish?:
@@ -84,7 +84,7 @@ Which provider or tag files would you like to publish?:
 [5 ] Provider: Illuminate\Mail\MailServiceProvider
 [6 ] Provider: Illuminate\Notifications\NotificationServiceProvider
 [7 ] Provider: Illuminate\Pagination\PaginationServiceProvider
-**_ [8 ] Provider: Kavenegar\Laravel\ServiceProviderLaravel9_**
+**_ [8 ] Provider: Signalads\Laravel\ServiceProviderLaravel9_**
 .
 .
 .
@@ -92,7 +92,7 @@ Which provider or tag files would you like to publish?:
 
 ## Step 4 - Api-Key
 
-Now you must define your [API Key](http://panel.kavenegar.com/client/setting/account "API Key") to project. for this head to **config/kavenegar.php** then put your API KEY in the code:
+Now you must define your [API Key](http://panel.signalads.com/client/setting/account "API Key") to project. for this head to **config/signalads.php** then put your API KEY in the code:
 
 ```
 <?php
@@ -110,7 +110,7 @@ You can use the package where ever you want.
 - First use the class:
 
 ```php
-use Kavenegar;
+use Signalads;
 ```
 
 Then use this pattern to send SMS:
@@ -123,7 +123,7 @@ try{
 
     $receptor = array("09361234567","09191234567");			//Receptors numbers
 
-    $result = Kavenegar::Send($sender,$receptor,$message);
+    $result = Signalads::Send($sender,$receptor,$message);
     if($result){
         foreach($result as $r){
             echo "messageid = $r->messageid";
@@ -137,11 +137,11 @@ try{
         }
     }
 }
-catch(\Kavenegar\Exceptions\ApiException $e){
+catch(\Signalads\Exceptions\ApiException $e){
     // در صورتی که خروجی وب سرویس 200 نباشد این خطا رخ می دهد
     echo $e->errorMessage();
 }
-catch(\Kavenegar\Exceptions\HttpException $e){
+catch(\Signalads\Exceptions\HttpException $e){
     // در زمانی که مشکلی در برقرای ارتباط با وب سرویس وجود داشته باشد این خطا رخ می دهد
     echo $e->errorMessage();
 }
@@ -158,7 +158,7 @@ try{
     $template="verify";
     //Send null for tokens not defined in the template
     //Pass token10 and token20 as parameter 6th and 7th
-    $result = Kavenegar::VerifyLookup($receptor, $token, $token2, $token3, $template, $type = null);
+    $result = Signalads::VerifyLookup($receptor, $token, $token2, $token3, $template, $type = null);
     if($result){
         foreach($result as $r){
             echo "messageid = $r->messageid";
@@ -172,17 +172,17 @@ try{
         }
     }
 }
-catch(\Kavenegar\Exceptions\ApiException $e){
+catch(\Signalads\Exceptions\ApiException $e){
     // در صورتی که خروجی وب سرویس 200 نباشد این خطا رخ می دهد
     echo $e->errorMessage();
 }
-catch(\Kavenegar\Exceptions\HttpException $e){
+catch(\Signalads\Exceptions\HttpException $e){
     // در زمانی که مشکلی در برقرای ارتباط با وب سرویس وجود داشته باشد این خطا رخ می دهد
     echo $e->errorMessage();
 }
 ```
 
-You can find all the **Error handlings** and **API parameters** and **Usage methods** in the [KaveNegar](https://kavenegar.com) website.
+You can find all the **Error handlings** and **API parameters** and **Usage methods** in the [KaveNegar](https://signalads.com) website.
 
 # Usage in Notifications
 
@@ -194,10 +194,10 @@ create your notification:
 php artisan make:notification InvoicePaid
 ```
 
-extend your notification from KavenegarBaseNotification:
+extend your notification from SignaladsBaseNotification:
 
 ```php
-class InvoicePaid extends KavenegarBaseNotification
+class InvoicePaid extends SignaladsBaseNotification
 {
 
 }
@@ -206,7 +206,7 @@ class InvoicePaid extends KavenegarBaseNotification
 overide the toKavengar function:
 
 ```php
-class InvoicePaid extends KavenegarBaseNotification
+class InvoicePaid extends SignaladsBaseNotification
 {
 
    public function __construct(Invoice $invoice)
@@ -214,21 +214,21 @@ class InvoicePaid extends KavenegarBaseNotification
        $this->invoice = $invoice;
    }
 
-    public function toKavenegar($notifiable)
+    public function toSignalads($notifiable)
     {
-        return (new KavenegarMessage("فاکتور شما به شماره $invoice->id پرداخت شد."))->from('10004346');
+        return (new SignaladsMessage("فاکتور شما به شماره $invoice->id پرداخت شد."))->from('10004346');
     }
 }
 ```
 
-you should add Notifiable trait and routeNotificationForKavenegar method in your model
+you should add Notifiable trait and routeNotificationForSignalads method in your model
 
 ```php
 class User extends Authenticatable
 {
     use Notifiable;
 
-    public function routeNotificationForKavenegar($driver, $notification = null)
+    public function routeNotificationForSignalads($driver, $notification = null)
     {
         return $this->mobile;
     }
@@ -236,15 +236,15 @@ class User extends Authenticatable
 }
 ```
 
-** _Notice: IF you DO NOT add routeNotificationForKavenegar in your notifiable model then you should set your receiver in your notification :_ **
+** _Notice: IF you DO NOT add routeNotificationForSignalads in your notifiable model then you should set your receiver in your notification :_ **
 
 ```php
-class InvoicePaid extends KavenegarBaseNotification
+class InvoicePaid extends SignaladsBaseNotification
 {
 
-    public function toKavenegar($notifiable)
+    public function toSignalads($notifiable)
     {
-        return (new KavenegarMessage('فاکتور شما به شماره ۱۲۳۴ پرداخت شد.'))->from('10004346')->to('092100000');
+        return (new SignaladsMessage('فاکتور شما به شماره ۱۲۳۴ پرداخت شد.'))->from('10004346')->to('092100000');
     }
 }
 ```
@@ -252,12 +252,12 @@ class InvoicePaid extends KavenegarBaseNotification
 for send verify lookup message you should use verifyLookup method for set method name and tokens:
 
 ```php
-class InvoicePaid extends KavenegarBaseNotification
+class InvoicePaid extends SignaladsBaseNotification
 {
 
-    public function toKavenegar($notifiable)
+    public function toSignalads($notifiable)
     {
-        return (new KavenegarMessage())
+        return (new SignaladsMessage())
             ->verifyLookup('verify_first',['token1','token2']);
     }
 }
@@ -265,7 +265,7 @@ class InvoicePaid extends KavenegarBaseNotification
 
 ## Contribution
 
-Bug fixes, docs, and enhancements welcome! Please let us know [support@kavenegar.com](mailto:support@kavenegar.com?Subject=SDK)
+Bug fixes, docs, and enhancements welcome! Please let us know [support@signalads.com](mailto:support@signalads.com?Subject=SDK)
 
 <div  dir="rtl">
 ## راهنما
@@ -276,25 +276,25 @@ Bug fixes, docs, and enhancements welcome! Please let us know [support@kavenegar
 
 ### ساخت حساب کاربری
 
-اگر در وب سرویس کاوه نگار عضو نیستید میتوانید از [لینک عضویت](http://panel.kavenegar.com/client/membership/register) ثبت نام و اکانت آزمایشی برای تست API دریافت نمایید.
+اگر در وب سرویس کاوه نگار عضو نیستید میتوانید از [لینک عضویت](http://panel.signalads.com/client/membership/register) ثبت نام و اکانت آزمایشی برای تست API دریافت نمایید.
 
 ### مستندات
 
-برای مشاهده اطلاعات کامل مستندات [وب سرویس پیامک](http://kavenegar.com/وب-سرویس-پیامک.html) به صفحه [مستندات وب سرویس](http://kavenegar.com/rest.html) مراجعه نمایید.
+برای مشاهده اطلاعات کامل مستندات [وب سرویس پیامک](http://signalads.com/وب-سرویس-پیامک.html) به صفحه [مستندات وب سرویس](http://signalads.com/rest.html) مراجعه نمایید.
 
 ### راهنمای فارسی
 
-در صورتی که مایل هستید راهنمای فارسی کیت توسعه کاوه نگار را مطالعه کنید به صفحه [کد ارسال پیامک](http://kavenegar.com/sdk.html) مراجعه نمایید.
+در صورتی که مایل هستید راهنمای فارسی کیت توسعه کاوه نگار را مطالعه کنید به صفحه [کد ارسال پیامک](http://signalads.com/sdk.html) مراجعه نمایید.
 
 ### اطالاعات بیشتر
 
 برای مطالعه بیشتر به صفحه معرفی
-[وب سرویس اس ام اس ](http://kavenegar.com)
+[وب سرویس اس ام اس ](http://signalads.com)
 کاوه نگار
 مراجعه نمایید .
 
-اگر در استفاده از کیت های سرویس کاوه نگار مشکلی یا پیشنهادی داشتید ما را با یک Pull Request یا ارسال ایمیل به support@kavenegar.com خوشحال کنید.
+اگر در استفاده از کیت های سرویس کاوه نگار مشکلی یا پیشنهادی داشتید ما را با یک Pull Request یا ارسال ایمیل به support@signalads.com خوشحال کنید.
 
 ## </div>
 
-[http://kavenegar.com](http://kavenegar.com)
+[http://signalads.com](http://signalads.com)

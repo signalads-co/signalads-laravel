@@ -1,36 +1,38 @@
-{  
-   "name":"masihjay-z/kavenegar",
-   "description":"laravel signalads integration",
-   "type":"laravel-package",
-   "keywords":[  
-      "laravel",
-      "signalads",
-      "sms",
-      "api"
-   ],
-   "license":"MIT",
-   "authors":[  
-      {  
-         "name":"Signalads API Team",
-         "email":"support@signalads.com"
-      }
-   ],
-   "require":{  
-      "signalads/php":"*"
-   },
-   "autoload":{  
-      "psr-4":{  
-         "Signalads\\Laravel\\":"src/"
-      }
-   },
-   "extra": {
-        "laravel": {
-            "providers": [
-                "Signalads\\Laravel\\ServiceProvider"
-            ],
-            "aliases": {
-                "Kavenegar":"Signalads\\Laravel\\Facade"
-            }
-        }
+{
+  "name": "signalads-co/laravel",
+  "description": "laravel signalads integration",
+  "type": "laravel-package",
+  "keywords": [
+    "laravel",
+    "signalads",
+    "sms",
+    "api"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Signalads API Team",
+      "email": "support@signalads.com"
     }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "signalads/php": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Signalads\\Laravel\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Signalads\\Laravel\\ServiceProvider"
+      ],
+      "aliases": {
+        "Kavenegar": "Signalads\\Laravel\\Facade"
+      }
+    }
+  }
 }
