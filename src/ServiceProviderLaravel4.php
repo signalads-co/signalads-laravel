@@ -2,6 +2,9 @@
 
 namespace Signalads\Laravel;
 
+use Signalads\Laravel\Service\SignaladsService;
+use Signalads\Laravel\Facade\Signalads;
+
 class ServiceProviderLaravel4 extends \Illuminate\Support\ServiceProvider
 {
     /**
@@ -21,8 +24,6 @@ class ServiceProviderLaravel4 extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-	$this->app['signalads'] = $this->app->share(function ($app) {
-            return new \Kavenegar\KavenegarApi($app['config']->get('signalads::apikey'));
-        });
+        Signalads::shouldProxyTo(SignaladsService::class);
     }
 }

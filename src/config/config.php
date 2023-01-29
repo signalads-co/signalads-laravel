@@ -1,4 +1,5 @@
-<?php 
+<?php
 return [
     'apikey' => '',
+    'sender' => '',
 ];

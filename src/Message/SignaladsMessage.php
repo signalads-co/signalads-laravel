@@ -2,50 +2,42 @@
 
 namespace Signalads\Laravel\Message;
 
+
+use Signalads\Laravel\Enum\SignalSendMethods;
+
 class SignaladsMessage
 {
     /**
      * The message content.
-     *
-     * @var string
      */
-    public $content;
+    public string $content;
+
+    /**
+     * pattern parameters
+     */
+    public int $patternId;
+    public array $patternParams;
 
     /**
      * The phone number the message should be sent from.
-     *
-     * @var string
      */
-    public $from;
+    public string $from;
 
     /**
      * The phone number the message should be received to.
-     *
-     * @var string
      */
-    public $to;
+    public string|array $to;
 
 
     /**
      * The message type.
-     *
-     * @var string
      */
-    public $type = 'text';
+    public string $type = 'text';
 
     /**
-     * The verifing lookup method's name.
-     *
-     * @var string
+     * the send method, selected from SignalSendMethods.
      */
-    public $method;
-
-    /**
-     * The verifing lookup tokens.
-     *
-     * @var array
-     */
-    public $tokens;
+    public string $method;
 
     /**
      * Create a new message instance.
@@ -53,22 +45,9 @@ class SignaladsMessage
      * @param string $content
      * @return void
      */
-    public function __construct($content = '')
+    public function __construct(string $content)
     {
         $this->content = $content;
-    }
-
-    /**
-     * Set the message content.
-     *
-     * @param string $content
-     * @return $this
-     */
-    public function content($content)
-    {
-        $this->content = $content;
-
-        return $this;
     }
 
     /**
@@ -77,7 +56,7 @@ class SignaladsMessage
      * @param string $from
      * @return $this
      */
-    public function from($from)
+    public function from(string $from): static
     {
         $this->from = $from;
 
@@ -87,28 +66,52 @@ class SignaladsMessage
     /**
      * Set the phone number the message should be received to.
      *
-     * @param string $to
+     * @param string|array $to
      * @return $this
      */
-    public function to($to)
+    public function to(string|array $to): static
     {
         $this->to = $to;
 
         return $this;
     }
 
-
     /**
-     * Set the verifing lookup method that the message should be sent from.
+     * set active and verify pattern id
      *
-     * @param string $method
-     * @param array $tokens
+     * @param int $patternId
      * @return $this
      */
-    public function verifyLookup($method, $tokens)
+    public function patternId(int $patternId): static
     {
-        $this->method = $method;
-        $this->tokens = is_array($tokens) ? $tokens : [$tokens];
+        $this->patternId = $patternId;
+
+        return $this;
+    }
+
+    /**
+     * set active and verify pattern params
+     *
+     * @param array $params
+     * @return $this
+     */
+    public function patternParams(array $params): static
+    {
+        $this->patternParams = $params;
+
+        return $this;
+    }
+
+
+    /**
+     * Set send method by default set send.
+     *
+     * @param string $sendMethod
+     * @return $this
+     */
+    public function sendMethod(string $sendMethod = SignalSendMethods::send): static
+    {
+        $this->method = $sendMethod;
         return $this;
     }
 

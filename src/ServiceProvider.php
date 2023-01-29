@@ -8,17 +8,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
      */
-    protected $defer = false;
+    protected bool $defer = false;
 
     /**
      * The actual provider.
-     *
-     * @var \Illuminate\Support\ServiceProvider
      */
-    protected $provider;
+    protected \Illuminate\Support\ServiceProvider $provider;
 
     /**
      * Instantiate the service provider.
@@ -40,17 +36,16 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        return $this->provider->boot();
+        $this->provider->boot();
     }
 
     /**
      * Register the service provider.
-     *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        return $this->provider->register();
+        $this->provider->register();
     }
 
     /**
@@ -58,7 +53,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return mixed
      */
-    private function getProvider()
+    private function getProvider(): mixed
     {
         $app = $this->app;
 
@@ -67,13 +62,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         switch ($version) {
             case 4:
                 return new ServiceProviderLaravel4($app);
-
             case 5:
                 return new ServiceProviderLaravel5($app);
-
             case 6:
                 return new ServiceProviderLaravel6($app);
-
             case 7:
                 return new ServiceProviderLaravel7($app);
             case 8:
@@ -90,7 +82,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      *
      * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['signalads'];
     }

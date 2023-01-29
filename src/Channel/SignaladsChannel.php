@@ -2,64 +2,65 @@
 
 namespace Signalads\Laravel\Channel;
 
-use Signalads\SignaladsApi;
-use Signalads\Laravel\Message\SignaladsMessage;
-use \Signalads\Laravel\Facade as Signalads;
+
+use Illuminate\Notifications\Notification;
+use Signalads\Laravel\Enum\SignalSendMethods;
+use Signalads\Laravel\Facade\Signalads;
+use Signalads\Laravel\Service\SignaladsService;
 
 class SignaladsChannel
 {
     /**
-     * The Signalads client instance.
-     *
-     * @var Signalads\SignaladsApi
+     * @throws \Exception
      */
-    protected $signalads;
-
-    /**
-     * The phone number notifications should be sent from.
-     *
-     * @var string
-     */
-    protected $from;
-
-    /**
-     * Create a new Signalads channel instance.
-     *
-     * @param Signalads\SignaladsApi $signalads
-     * @param string $from
-     * @return void
-     */
-    public function __construct(SignaladsApi $signalads, $from = null)
+    public function send($notifiable, Notification $notification)
     {
-        $this->from = $from;
-        $this->signalads = $signalads;
-    }
+        if (method_exists($notifiable, 'routeNotificationForSignalads')) {
+            $receptor = $notifiable->routeNotificationForSignalads($notifiable);
+        } else {
+            $receptor = $notifiable->getKey();
+        }
 
-    /**
-     * Send the given notification.
-     *
-     * @param mixed $notifiable
-     * @param \Illuminate\Notifications\Notification $notification
-     * @return \Signalads\Laravel\Message\SignaladsMessage
-     */
-    public function send($notifiable, $notification)
-    {
-        $message = $notification->toSignalads($notifiable);
-
-        $message->to($message->to ?: $notifiable->routeNotificationFor('signalads', $notification));
-        if (!$message->to || !($message->from || $message->method)) {
+        $data = method_exists($notification, 'toSignalads')
+            ? $notification->toSignalads($notifiable)
+            : $notification->toArray($notifiable);
+        if (empty($data)) {
             return;
         }
 
-        return $message->method ?
-            $this->verifyLookup($message) :
-            Signalads::Send($message->from, $message->to, $message->content);
-    }
 
-    public function verifyLookup(SignaladsMessage $message)
-    {
-        $token2 = isset($message->tokens[1]) ? $message->tokens[1] : null;
-        $token3 = isset($message->tokens[2]) ? $message->tokens[2] : null;
-        return Signalads::VerifyLookup($message->to, $message->tokens[0], $token2, $token3, $message->method);
+        $method = $data->method;
+
+        if (
+            $method == SignalSendMethods::sendGroup || SignalSendMethods::sendPattern
+        ) {
+            $receptor = is_array($receptor) ? $receptor : [$receptor];
+        }
+
+        if (method_exists(SignaladsService::class, $method)) {
+            if (
+                $method == SignalSendMethods::sendPattern
+                && (!isset($data->patternParams) || !isset($data->patternId))
+            ) {
+                throw new \Exception('send method require pattern param and pattern id');
+            } elseif (
+                $method == SignalSendMethods::sendPattern
+                && (isset($data->patternParams) || isset($data->patternId))
+            ) {
+                Signalads::$method(
+                    config('signalads.sender'),
+                    $data->patternId,
+                    $data->patternParams,
+                    $receptor
+                );
+                return true;
+            }
+
+            Signalads::$method(config('signalads.sender'), $receptor, $data->content);
+        } else {
+            Signalads::send(config('signalads.sender'), $receptor, $data->content);
+        }
+
+        return true;
     }
 }
