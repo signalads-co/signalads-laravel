@@ -12,7 +12,7 @@ class ServiceProviderLaravel5 extends \Illuminate\Support\ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([__DIR__ . '/config/config.php' => config_path('signalads.php')], 'signalads-laravel');
+        $this->publishes([__DIR__ . '/Config/config.php' => config_path('signalads.php')], 'signalads-laravel');
     }
     /**
      * Register the service provider.
@@ -21,7 +21,7 @@ class ServiceProviderLaravel5 extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/config/config.php', 'signalads');
+        $this->mergeConfigFrom(__DIR__ . '/Config/config.php', 'signalads');
 
         Signalads::shouldProxyTo(SignaladsService::class);
     }

@@ -5,13 +5,17 @@ one [Here](https://sms.signalads.com).**
 
 ##### Supported Laravel Versions:
 
-- V.4
-- V.5
-- V.6
-- V.7
-- V.8
-- **V.9**
-  > We highly recomment you to always use the latest version of laravel
+| Laravel Version |      Support       |
+|-----------------|:------------------:|
+| 3.0             |   :broken_heart:   |
+| 4.0             | :white_check_mark: |
+| 5.0             | :white_check_mark: |
+| 6.0             | :white_check_mark: |
+| 7.0             | :white_check_mark: |
+| 8.0             | :white_check_mark: |
+| 9.0             | :white_check_mark: |
+
+> We highly recomment you to always use the latest version of laravel
 
 # Installation
 
@@ -21,7 +25,7 @@ one [Here](https://sms.signalads.com).**
   You can install signalads/laravel with Composer directly in your project:
 
 ```php
-composer require signalads/laravel
+composer require signalads-co/laravel
 ```
 
 - **Method 2**:
@@ -103,61 +107,63 @@ use Signalads\Laravel\Facade\Signalads;
 - Send Single SMS
 
 ```php
-$sender = "10004346"; //This is the Sender number
+$sender = "10004346"; //This is the Sender number if not set load from config
 
 $message = "خدمات پیام کوتاه سیگنال"; //The body of SMS
 
 $receptor = "09191234567"; //Receptors numbers
 
-$result = Signalads::send($sender, $receptor, $message);
+$result = Signalads::send($receptor, $message, $sender);
 ```
+
 `Sample Output`
 
 ```json
 {
-  "data": {
-    "message_id": "28561b88-8403-45b8-a114-508abdb9c436",
-    "price": 120
-  },
-  "message": "پیام شما با موفقیت در صف ارسال قرار گرفت",
-  "error": {
-    "message": null,
-    "errors": null
-  }
+    "data": {
+        "message_id": "28561b88-8403-45b8-a114-508abdb9c436",
+        "price": 120
+    },
+    "message": "پیام شما با موفقیت در صف ارسال قرار گرفت",
+    "error": {
+        "message": null,
+        "errors": null
+    }
 }
 ```
 
 - Send Multiple SMS With Same Text
 
 ```php
-$sender = "10004346"; //This is the Sender number
+$sender = "10004346"; //This is the Sender number if not set load from config
 
 $message = "خدمات پیام کوتاه سیگنال"; //The body of SMS
 
 $receptors = array("09361234567","09191234567"); //Receptors numbers
 
-$result = Signalads::sendGroup($sender, $receptors, $message);
+$result = Signalads::sendGroup($receptors, $message, $sender);
 ```
 
 `Sample Output`
 
 ```json
 {
-  "data": {
-    "message_id": "55800454-fe52-44b3-9c44-43c87d6f29b2",
-    "price": 240
-  },
-  "message": "پیام شما با موفقیت در صف ارسال قرار گرفت",
-  "error": {
-    "message": null,
-    "errors": null
-  }
+    "data": {
+        "message_id": "55800454-fe52-44b3-9c44-43c87d6f29b2",
+        "price": 240
+    },
+    "message": "پیام شما با موفقیت در صف ارسال قرار گرفت",
+    "error": {
+        "message": null,
+        "errors": null
+    }
 }
 ```
+
 - Send Sms With Pattern
 
 ```php
-$sender = "10004346"; //This is the Sender number
+$sender = "10004346"; //This is the Sender number if not set load from config
 
 $patternId = 123; 
 
@@ -165,7 +171,7 @@ $patternParams = ["param 1", "param 2"];
 
 $receptors = array("09361234567","09191234567"); //Receptors numbers
 
-$result = Signalads::sendPattern($sender, $patternId, $patternParams, $receptors);
+$result = Signalads::sendPattern($patternId, $patternParams, $receptors, $sender);
 ```
 
 `Sample Output`
@@ -182,8 +188,10 @@ $result = Signalads::sendPattern($sender, $patternId, $patternParams, $receptors
     }
 }
 ```
+
 - Get Message Status
   `Statuses`
+
 ```json
 PENDING = 1
 SENDING = 2
@@ -193,6 +201,7 @@ NOT_DELIVERED = 5
 NOT_SENDING = 6
 ERROR = 7
 ```
+
 ```php
 $messageId = 123;
 
@@ -209,45 +218,45 @@ $result = Signalads::status($messageId, $limit, $offset, $status, $receptor);
 
 ```json
 {
-  "data": {
-    "items": [
-      {
-        "number": "09xxxxxxxxx",
-        "status": 1
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 2
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 3
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 4
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 5
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 6
-      },
-      {
-        "number": "09xxxxxxxxx",
-        "status": 7
-      }
-    ],
-    "count": 7,
-    "sum": 0
-  },
-  "message": null,
-  "error": {
+    "data": {
+        "items": [
+            {
+                "number": "09xxxxxxxxx",
+                "status": 1
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 2
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 3
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 4
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 5
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 6
+            },
+            {
+                "number": "09xxxxxxxxx",
+                "status": 7
+            }
+        ],
+        "count": 7,
+        "sum": 0
+    },
     "message": null,
-    "errors": null
-  }
+    "error": {
+        "message": null,
+        "errors": null
+    }
 }
 ```
 
@@ -256,18 +265,19 @@ $result = Signalads::status($messageId, $limit, $offset, $status, $receptor);
 ```php
 $result = Signalads::getCredit();
 ```
+
 `Sample Output`
 
 ```json
 {
-  "data": {
-    "credit": 12345
-  },
-  "message": null,
-  "error": {
+    "data": {
+        "credit": 12345
+    },
     "message": null,
-    "errors": null
-  }
+    "error": {
+        "message": null,
+        "errors": null
+    }
 }
 ```
 
@@ -358,7 +368,8 @@ class SendWithPattern extends SignaladsBaseNotification
 سیگنال
 مراجعه نمایید .
 
-درصورت مشاهده هرگونه اشکال در کارکرد پکیج میتوانید درخواست pull request کنید یا با ایمیل support@signalads.com با ما در ارتباط باشید.
+درصورت مشاهده هرگونه اشکال در کارکرد پکیج میتوانید درخواست pull request کنید یا با ایمیل support@signalads.com با ما در
+ارتباط باشید.
 
 ## </div>
 

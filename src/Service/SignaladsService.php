@@ -13,23 +13,31 @@ class SignaladsService
         $this->signalads = new SignalAdsApi(config('signalads.apikey'));
     }
 
-    public function send(string $sender, string $receptor, string $text, $date = null)
+    public function send(string $receptor, string $text, string $sender = '', $date = null)
     {
+        $sender = $this->getSender($sender);
+
         return $this->signalads->send($sender, $receptor, $text, $date);
     }
 
-    public function sendGroup(string $sender, array $receptor, string $text, $date = null)
+    public function sendGroup(array $receptor, string $text,  string $sender = '',$date = null)
     {
+        $sender = $this->getSender($sender);
+
         return $this->signalads->SendGroup($sender, $receptor, $text, $date);
     }
 
-    public function sendPair(string $sender, array $messages)
+    public function sendPair(array $messages, string $sender = '')
     {
+        $sender = $this->getSender($sender);
+
         return $this->signalads->SendPair($sender, $messages);
     }
 
-    public function sendPattern(string $sender, int $patternId, array $patternParams, array $receptors)
+    public function sendPattern(int $patternId, array $patternParams, array $receptors, string $sender = '')
     {
+        $sender = $this->getSender($sender);
+
         return $this->signalads->SendPattern($sender, $patternId, $patternParams, $receptors);
     }
 
@@ -52,5 +60,10 @@ class SignaladsService
     public function getPackagePrice()
     {
         return $this->signalads->GetPackagePrice();
+    }
+
+    private function getSender(string $sender = '')
+    {
+        return empty($sender) ? config('signalads.sender') : $sender;
     }
 }

@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Facade;
 use Signalads\Laravel\Service\SignaladsService;
 
 /**
- * @method static sendGroup(string $sender, string[] $receptors, string $message)
- * @method static send(string $sender, string $receptor, string $message)
- * @method static sendPair(string $sender, string[] $receptors)
- * @method static sendPattern(string $sender, int $patternId, int[] $patternParams, string[] $receptors)
- * @method static status(int $messageId, int $limit, int $offset, int $status, string $receptor)
+ * @method static sendGroup(string[] $receptors, string $message, string $sender = '')
+ * @method static send(string $receptor, string $message, string $sender = '')
+ * @method static sendPair(string[] $receptors, string $sender = '')
+ * @method static sendPattern(int $patternId, int[] $patternParams, string[] $receptors, string $sender = '')
+ * @method static status(int $messageId, int $limit = 5000, int $offset = 0, int $status = '', string $receptor = '')
  * @method static getCredit()
  * @method static getPackagePrice()
  *
@@ -20,6 +20,7 @@ class Signalads extends Facade
 {
     // signalads php sdk object
     public $signalads;
+
     /**
      * Get the registered name of the component.
      *
