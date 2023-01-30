@@ -1,6 +1,6 @@
 # Signalads Laravel
 
-**First of all you will ned an [API Key](https://sms.signalads.com "API Key") . You can get
+**First of all you will ned an [API Key](https://sms.signalads.com/user/web-service/web-service-list "API Key") . You can get
 one [Here](https://sms.signalads.com).**
 
 ##### Supported Laravel Versions:
@@ -41,23 +41,7 @@ Then run following command to download extension using **composer**
 $ composer update
 ```
 
-## Step 2
-
-Head to **config/app.php** and add this line to the end of **providers** Array:
-
-```php
-Signalads\Laravel\ServiceProvider::class,
-```
-
-So that array must me something like this:
-
-```php
-'providers' => [
-    Signalads\Laravel\ServiceProvider::class
-]
-```
-
-## Step 3 - Publish
+## Step 2 - Publish
 
 Run this command in your project dirctory:
 
@@ -65,7 +49,7 @@ Run this command in your project dirctory:
 php artisan vendor:publish --tag=signalads-laravel
 ```
 
-## Step 4 - Api-Key
+## Step 3 - Api-Key
 
 Now you must define your [API Key](https://sms.signalads.com/user/web-service/web-service-list "API Key") and Your Line
 to project. for this head to **config/signalads.php** then put your API KEY in the code:
